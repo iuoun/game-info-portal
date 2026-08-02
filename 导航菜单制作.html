@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>开心网游戏大厅</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+        }
+
+        /* ===== 顶部导航 ===== */
+        .header {
+            background: linear-gradient(90deg, #e02c3c, #d62839);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 32px;
+            margin: 12px 12px 0 12px;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 3px 8px rgba(214, 40, 57, 0.25);
+            position: relative;
+            z-index: 2;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo {
+            width: auto;
+            max-width: 180px;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.25s ease;
+        }
+        .logo:hover {
+            transform: scale(1.04);
+        }
+
+        .nav-item {
+            font-size: 28px;
+            padding: 12px 40px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            z-index: 3;
+            user-select: none;
+        }
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .nav-active {
+            background: #fff;
+            color: #d62839;
+            box-shadow: 0 -2px 8px rgba(214, 40, 57, 0.08);
+        }
+
+        /* ===== 下拉菜单 ===== */
+        .dropdown {
+            position: relative;
+            z-index: 5;
+            margin-left: 4px;
+        }
+
+        .dropbtn {
+            font-size: 28px;
+            padding: 12px 28px 12px 20px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-radius: 8px 8px 0 0;
+            display: inline-block;
+            user-select: none;
+            position: relative;
+            color: #fff;
+        }
+        .dropbtn::after {
+            content: " ▾";
+            font-size: 22px;
+            transition: transform 0.25s ease;
+        }
+        .dropbtn:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+        .dropbtn:hover::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 200px;
+            background: #fff;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            padding: 6px 0;
+            opacity: 0;
+            transform: translateY(-4px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 24px;
+            font-size: 18px;
+            color: #303133;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        .dropdown-content a:hover {
+            background: #f5f7fa;
+            border-left-color: #d62839;
+            color: #d62839;
+            padding-left: 28px;
+        }
+
+        .dropdown-content a:first-child {
+            font-weight: 600;
+            color: #d62839;
+        }
+
+        .header-right a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 22px;
+            margin: 0 12px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .header-right a:hover {
+            text-decoration: underline;
+            transform: translateY(-2px);
+        }
+
+        /* ===== 主体三栏 ===== */
+        .main {
+            display: flex;
+            margin: 0 12px;
+            gap: 14px;
+            background: #fff;
+            padding: 0 0 14px 0;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== 左侧游戏列表 ===== */
+        .game-list {
+            width: 240px;
+            border: 1px solid #e4e7ed;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #e8eaed url('./images/游戏列表灰色渐变.jpg') center/cover no-repeat;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.25s ease;
+            margin: 14px 0 0 14px;
+        }
+        .game-list:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+        }
+
+        .game-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            font-size: 18px;
+            cursor: pointer;
+            background: transparent;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.25s ease;
+            color: #222;
+        }
+        .game-item:hover {
+            background: #f0d6b0 url('./images/游戏列表鼠标移入的渐变.jpg') center/cover no-repeat;
+            padding-left: 20px;
+            color: #111;
+        }
+
+        .game-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .game-icon {
+            width: auto;
+            height: 36px;
+            object-fit: contain;
+            transition: transform 0.25s ease;
+        }
+        .game-item:hover .game-icon {
+            transform: translateX(-6px);
+        }
+
+        .game-arrow-img {
+            width: auto;
+            height: 20px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.25s ease;
+        }
+        .game-arrow-img:hover {
+            transform: translateX(4px);
+        }
+
+        /* ===== 中间广告轮播 ===== */
+        .banner {
+            flex: 1;
+            border: 1px solid #e4e7ed;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            background: #fff;
+            margin: 14px 0 0 0;
+        }
+        .banner-wrap {
+            width: 100%;
+            display: flex;
+            transition: transform 0.4s ease;
+        }
+        .banner-img {
+            width: 100%;
+            height: auto;
+            flex-shrink: 0;
+            display: block;
+            object-fit: contain;
+            background: #fff;
+        }
+        .banner-btn {
+            display: none;
+        }
+        .banner-page {
+            position: absolute;
+            bottom: 12px;
+            right: 24px;
+            display: flex;
+            gap: 10px;
+        }
+        .page-dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.65);
+            color: #666;
+            text-align: center;
+            line-height: 36px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .page-dot:hover {
+            background: rgba(255, 255, 255, 0.92);
+        }
+        .page-dot.active {
+            background: #e02c3c;
+            color: #fff;
+        }
+
+        /* ===== 右侧登录面板 ===== */
+        .login-box {
+            width: 280px;
+            border: 1px solid #e4e7ed;
+            border-radius: 8px;
+            padding: 32px 22px;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.25s ease;
+            margin: 14px 14px 0 0;
+        }
+        .login-box:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+        }
+
+        .login-box h3 {
+            margin-bottom: 28px;
+            font-weight: normal;
+            font-size: 24px;
+            color: #303133;
+            text-align: center;
+        }
+
+        .row {
+            margin: 22px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .row label {
+            display: inline-block;
+            width: 72px;
+            font-size: 20px;
+            color: #444;
+        }
+
+        .row input {
+            padding: 9px 10px;
+            width: 162px;
+            border: 1px solid #dcdfe6;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.25s ease;
+        }
+        .row input:focus {
+            border-color: #d62839;
+            outline: none;
+        }
+
+        .login-btn {
+            background: #d62839;
+            color: #fff;
+            border: none;
+            padding: 11px 42px;
+            font-size: 20px;
+            margin: 12px 0 22px 72px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .login-btn:hover {
+            background: #b81e2c;
+            box-shadow: 0 3px 10px rgba(214, 40, 57, 0.3);
+        }
+
+        .link-group {
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .link-group a {
+            color: #4466bb;
+            margin: 0 16px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .link-group a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== 下方整体布局 ===== */
+        .bottom-wrap {
+            margin: 14px 12px;
+            display: flex;
+            gap: 14px;
+        }
+        .bottom-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .bottom-right {
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .tab-bar {
+            border: 1px solid #e4e7ed;
+            padding: 12px 18px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+        .tab-bar span {
+            font-size: 18px;
+            margin-right: 26px;
+            cursor: pointer;
+            padding: 3px 6px;
+            border-radius: 4px;
+            transition: background 0.25s ease;
+        }
+        .tab-bar span:hover {
+            background: #eee;
+        }
+        .tab-bar span:first-child {
+            color: #c82423;
+            font-weight: bold;
+        }
+
+        .game-card-wrap {
+            border: 1px solid #e4e7ed;
+            padding: 18px;
+            display: flex;
+            gap: 18px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.25s ease;
+        }
+        .game-card-wrap:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+        }
+
+        .game-card {
+            flex: 1;
+            border: 1px solid #e8e8e8;
+            padding: 16px;
+            display: flex;
+            gap: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            min-height: auto;
+            background: #fdfdfd;
+        }
+        .game-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .game-card img {
+            width: auto;
+            max-width: 200px;
+            height: auto;
+            object-fit: contain;
+            background: #fff;
+            border: 1px solid #eee;
+            transition: transform 0.25s ease;
+        }
+        .game-card img:hover {
+            transform: translateX(-8px);
+        }
+
+        .card-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: auto;
+        }
+
+        .card-text p {
+            line-height: 1.65;
+            font-size: 15px;
+            color: #444;
+        }
+
+        .card-btn-group {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .card-btn-group button {
+            padding: 7px 20px;
+            margin-right: 6px;
+            border: 1px solid #c0c4cc;
+            background: #f5f7fa;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .card-btn-group button:hover {
+            background: #e9ecef;
+        }
+
+        .card-btn-group button:last-child {
+            border-color: #2b85d8;
+            background: linear-gradient(180deg, #4fa3f5, #2b85d8);
+            color: #fff;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+        .card-btn-group button:last-child:hover {
+            background: linear-gradient(180deg, #67b3ff, #1f73c0);
+            transform: translateY(-2px);
+        }
+
+        /* ===== 角色扮演区域 ===== */
+        .role-wrap {
+            border: 1px solid #e4e7ed;
+            padding: 18px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.25s ease;
+        }
+        .role-wrap:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+        }
+
+        .role-title {
+            font-size: 18px;
+            color: #c82423;
+            font-weight: bold;
+            margin-bottom: 18px;
+        }
+
+        .role-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto auto;
+            column-gap: 12px;
+            row-gap: 26px;
+        }
+
+        .role-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 9px;
+            transition: transform 0.25s ease;
+        }
+        .role-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .role-img-box {
+            width: 100%;
+            height: 130px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+        .role-img-box img {
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 130px;
+            object-fit: contain;
+            cursor: pointer;
+            transition: transform 0.25s ease;
+            border: none;
+        }
+        .role-img-box img:hover {
+            transform: translateX(-6px);
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.08);
+        }
+
+        .role-item p {
+            font-size: 14px;
+            line-height: 1.55;
+            color: #333;
+            text-align: center;
+        }
+
+        .role-item .card-btn-group {
+            display: flex;
+            gap: 7px;
+        }
+
+        /* ===== 新闻公告 ===== */
+        .notice-box {
+            width: 100%;
+            border: 1px solid #e4e7ed;
+            padding: 18px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.25s ease;
+        }
+        .notice-box:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+        }
+
+        .notice-box h4 {
+            font-size: 18px;
+            color: #303133;
+            margin-bottom: 12px;
+        }
+
+        .notice-item {
+            font-size: 13px;
+            line-height: 1.85;
+            color: #2255bb;
+            cursor: pointer;
+            padding: 3px 0;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .notice-item:hover {
+            background: #f5f9ff;
+            padding-left: 8px;
+            font-size: 15px;
+        }
+        .notice-item::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: url('./images/rightTwo.png') center/contain no-repeat;
+            flex-shrink: 0;
+        }
+
+        /* ===== 微博模块 ===== */
+        .weibo-box {
+            border: 1px solid #e4e7ed;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            transition: all 0.25s ease;
+        }
+        .weibo-box:hover {
+            background: #f8f8f8;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+        }
+        .weibo-box img {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            transition: transform 0.25s ease;
+        }
+        .weibo-box img:hover {
+            transform: scale(1.02);
+        }
+
+        /* ===== 游戏视频 ===== */
+        .video-box {
+            border: 1px solid #e4e7ed;
+            padding: 14px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            transition: box-shadow 0.25s ease;
+        }
+        .video-box:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.09);
+        }
+
+        .video-title {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #303133;
+        }
+
+        .video-item {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+            transition: background 0.25s ease;
+        }
+        .video-item:hover {
+            background: #fafafa;
+        }
+        .video-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .video-item img {
+            width: auto;
+            max-width: 90px;
+            height: auto;
+            max-height: 70px;
+            object-fit: contain;
+            background: #fff;
+            cursor: pointer;
+            transition: transform 0.25s ease;
+        }
+        .video-item img:hover {
+            transform: scale(1.08);
+        }
+
+        .video-text {
+            flex: 1;
+            font-size: 14px;
+            line-height: 1.65;
+            color: #333;
+        }
+
+        /* ===== 页脚 ===== */
+        footer {
+            text-align: center;
+            margin: 24px 0;
+            font-size: 14px;
+            color: #666;
+        }
+        footer a {
+            color: #2255bb;
+            text-decoration: none;
+            margin: 0 8px;
+            transition: all 0.25s ease;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== 漂浮广告 ===== */
+        #floatAd {
+            position: fixed;
+            top: 100px;
+            left: 200px;
+            width: 180px;
+            z-index: 99999;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+        }
+        #floatAd img {
+            width: 100%;
+            display: block;
+        }
+        #closeAd {
+            position: absolute;
+            top: 4px;
+            right: 8px;
+            font-size: 20px;
+            color: #333;
+            background: rgba(255, 255, 255, 0.8);
+            width: 24px;
+            height: 24px;
+            text-align: center;
+            line-height: 24px;
+            border-radius: 50%;
+            z-index: 2;
+            cursor: pointer;
+            transition: background 0.25s ease;
+        }
+        #closeAd:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== 顶部导航 ===== -->
+    <div class="header">
+        <div class="header-left">
+            <img class="logo" src="./images/gameLogo.png" alt="开心网游戏大厅" />
+            <span class="nav-item nav-active">首页</span>
+
+            <!-- ===== 新增下拉菜单 ===== -->
+            <div class="dropdown">
+                <span class="dropbtn">游戏分类</span>
+                <div class="dropdown-content">
+                    <a href="#">全部游戏</a>
+                    <a href="#">角色扮演</a>
+                    <a href="#">战争策略</a>
+                    <a href="#">体育经营</a>
+                    <a href="#">社交游戏</a>
+                    <a href="#">休闲益智</a>
+                    <a href="#">射击竞技</a>
+                    <a href="#">卡牌对战</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-right">
+            <a href="">注册</a> |
+            <a href="#">登录</a> |
+            <a href="#">帮助</a> |
+            <a href="#">更多</a>
+        </div>
+    </div>
+
+    <!-- ===== 主体区域 ===== -->
+    <div class="main">
+        <!-- 左侧游戏列表 -->
+        <div class="game-list">
+            <div class="game-item">
+                <div class="game-left">
+                    <img class="game-icon" src="./images/sub-2.gif" alt="征战四方" />
+                    <span>征战四方</span>
+                </div>
+                <img class="game-arrow-img" src="./images/rightA.png" alt="向右箭头" />
+            </div>
+            <div class="game-item">
+                <div class="game-left">
+                    <img class="game-icon" src="./images/sub-3.gif" alt="龙将" />
+                    <span>龙将</span>
+                </div>
+                <img class="game-arrow-img" src="./images/rightA.png" alt="向右箭头" />
+            </div>
+            <div class="game-item">
+                <div class="game-left">
+                    <img class="game-icon" src="./images/sub-4.gif" alt="弹弹堂" />
+                    <span>弹弹堂</span>
+                </div>
+                <img class="game-arrow-img" src="./images/rightA.png" alt="向右箭头" />
+            </div>
+            <div class="game-item">
+                <div class="game-left">
+                    <img class="game-icon" src="./images/sub-5.gif" alt="凡人修真2" />
+                    <span>凡人修真2</span>
+                </div>
+                <img class="game-arrow-img" src="./images/rightA.png" alt="向右箭头" />
+            </div>
+            <div class="game-item">
+                <div class="game-left">
+                    <img class="game-icon" src="./images/sub-6.gif" alt="一骑当先" />
+                    <span>一骑当先</span>
+                </div>
+                <img class="game-arrow-img" src="./images/rightA.png" alt="向右箭头" />
+            </div>
+            <div class="game-item">
+                <div class="game-left">
+                    <img class="game-icon" src="./images/sub-7.gif" alt="宫廷计" />
+                    <span>宫廷计</span>
+                </div>
+                <img class="game-arrow-img" src="./images/rightA.png" alt="向右箭头" />
+            </div>
+            <div class="game-item">
+                <div class="game-left">
+                    <img class="game-icon" src="./images/sub-8.gif" alt="神仙道" />
+                    <span>神仙道</span>
+                </div>
+                <img class="game-arrow-img" src="./images/rightA.png" alt="向右箭头" />
+            </div>
+        </div>
+
+        <!-- 中间广告banner -->
+        <div class="banner">
+            <div class="banner-wrap">
+                <img class="banner-img" src="./images/xdtgg_frxz2_44.jpg" alt="凡人修真2广告" />
+                <img class="banner-img" src="./images/111.jpg" alt="游戏广告2" />
+                <img class="banner-img" src="./images/222.jpg" alt="游戏广告3" />
+                <img class="banner-img" src="./images/333.jpg" alt="游戏广告4" />
+            </div>
+            <div class="banner-page">
+                <div class="page-dot active">1</div>
+                <div class="page-dot">2</div>
+                <div class="page-dot">3</div>
+                <div class="page-dot">4</div>
+            </div>
+        </div>
+
+        <!-- 右侧登录框 -->
+        <div class="login-box">
+            <h3>开心网用户登录</h3>
+            <div class="row">
+                <label>账号：</label>
+                <input type="text" placeholder="字母、数字的六位字符" />
+            </div>
+            <div class="row">
+                <label>密码：</label>
+                <input type="password" placeholder="四位数字" />
+            </div>
+            <button class="login-btn">登录</button>
+            <div class="link-group">
+                <a href="#">立即注册</a>
+                <a href="#">忘记密码</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 下方页面内容 ===== -->
+    <div class="bottom-wrap">
+        <div class="bottom-left">
+            <div class="tab-bar">
+                <span>全部游戏</span>
+                <span>战争策略</span>
+                <span>体育经营</span>
+                <span>社交游戏</span>
+            </div>
+
+            <div class="game-card-wrap">
+                <div class="game-card">
+                    <img src="./images/img-4.jpg" alt="龙将" />
+                    <div class="card-text">
+                        <p>三国题材横版RPG网游，丰富的武将系统</p>
+                        <p>类型：角色扮演</p>
+                        <p>游戏人气：470921</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-card">
+                    <img src="./images/img-5.jpg" alt="征战四方" />
+                    <div class="card-text">
+                        <p>一款不建主城不等CD，不占资源，全程战斗</p>
+                        <p>类型：征战策略</p>
+                        <p>游戏人气：8745221</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 角色扮演 -->
+            <div class="role-wrap">
+                <div class="role-title">角色扮演</div>
+                <div class="role-container">
+                    <div class="role-item">
+                        <div class="role-img-box">
+                            <img src="./images/img-6.jpg" alt="神仙道" />
+                        </div>
+                        <p>游戏人气：1765314<br />游戏状态：22区开启</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-img-box">
+                            <img src="./images/img-7.jpg" alt="征战四方" />
+                        </div>
+                        <p>游戏人气：1245814<br />游戏状态：23区开启</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-img-box">
+                            <img src="./images/img-8.jpg" alt="一骑当先" />
+                        </div>
+                        <p>游戏人气：1232158<br />游戏状态：25区开启</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-img-box">
+                            <img src="./images/img-9.jpg" alt="洪荒神话" />
+                        </div>
+                        <p>游戏人气：123745<br />游戏状态：18区开启</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-img-box">
+                            <img src="./images/img-10.jpg" alt="龙将" />
+                        </div>
+                        <p>游戏人气：178501<br />游戏状态：火爆开启</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-img-box">
+                            <img src="./images/img-11.jpg" alt="一球成名" />
+                        </div>
+                        <p>游戏人气：983014<br />游戏状态：2服开启</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-img-box">
+                            <img src="./images/img-12.jpg" alt="凡人修真2" />
+                        </div>
+                        <p>游戏人气：745214<br />游戏状态：4服开启</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-img-box">
+                            <img src="./images/img-13.jpg" alt="傲视天地" />
+                        </div>
+                        <p>游戏人气：654814<br />游戏状态：火爆开启</p>
+                        <div class="card-btn-group">
+                            <button>选服</button>
+                            <button>进入游戏</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧边栏 -->
+        <div class="bottom-right">
+            <!-- 新闻公告 -->
+            <div class="notice-box">
+                <h4>新闻公告</h4>
+                <div class="notice-item">[龙将] 火爆8服·八门金</div>
+                <div class="notice-item">[弹弹堂] 41服开启·万人竞技</div>
+                <div class="notice-item">[凡人修真2] 03月08日·四海帝王</div>
+                <div class="notice-item">[一骑当先] 开心2服上线送黄金</div>
+                <div class="notice-item">[宫廷计] 03月06日·西施秘史</div>
+                <div class="notice-item">[凡人修真2] 03月06日·四海帝王</div>
+            </div>
+
+            <!-- 腾讯微博 -->
+            <div class="weibo-box">
+                <img src="./images/ad1.jpg" alt="腾讯微博" />
+            </div>
+            <!-- 新浪微博 -->
+            <div class="weibo-box">
+                <img src="./images/ad2.jpg" alt="新浪微博" />
+            </div>
+
+            <!-- 游戏视频 -->
+            <div class="video-box">
+                <h4 class="video-title">游戏视频</h4>
+                <div class="video-item">
+                    <img src="./images/img-1.jpg" alt="航海之王" />
+                    <div class="video-text">
+                        <p>《航海之王》麻辣炫酷反穿越，英雄时尚大变身！</p>
+                    </div>
+                </div>
+                <div class="video-item">
+                    <img src="./images/img-2.jpg" alt="弹弹堂" />
+                    <div class="video-text">
+                        <p>《弹弹堂》吴克群同名激情主题MV，体验修真乐趣</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 漂浮广告 ===== -->
+    <div id="floatAd">
+        <span id="closeAd">×</span>
+        <img src="./images/ad3.jpg" alt="军团远征广告" />
+    </div>
+
+    <!-- ===== 页脚 ===== -->
+    <footer>
+        <a href="#">关于我们</a>
+        <a href="#">手机版</a>
+        <a href="#">开放平台</a>
+        <a href="#">自助广告</a>
+        <a href="#">招聘</a>
+        <a href="#">客服</a>
+        <a href="#">帮助</a>
+        &nbsp;&nbsp;
+        ©2017开心网 文网文[2009]157号 京ICP证080482号 京公网安备110000000003号 未成年人家长监护
+    </footer>
+
+    <script>
+        // ===== 轮播圆点切换 =====
+        var wrap = document.querySelector('.banner-wrap');
+        var dots = document.querySelectorAll('.page-dot');
+        var banner = document.querySelector('.banner');
+        var index = 0;
+        var width = banner.clientWidth;
+
+        function changeSlide() {
+            wrap.style.transform = 'translateX(-' + (index * width) + 'px)';
+            dots.forEach(function(dot) {
+                dot.classList.remove('active');
+            });
+            dots[index].classList.add('active');
+        }
+
+        dots.forEach(function(dot, i) {
+            dot.onclick = function() {
+                index = i;
+                changeSlide();
+            };
+        });
+
+        window.addEventListener('resize', function() {
+            width = banner.clientWidth;
+            changeSlide();
+        });
+
+        // ===== 左侧游戏列表点击激活 =====
+        var gameItems = document.querySelectorAll('.game-item');
+        gameItems.forEach(function(item) {
+            item.addEventListener('click', function() {
+                gameItems.forEach(function(ele) {
+                    ele.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // ===== 漂浮广告反弹 + 关闭 =====
+        var ad = document.getElementById('floatAd');
+        var closeBtn = document.getElementById('closeAd');
+
+        closeBtn.onclick = function(e) {
+            e.stopPropagation();
+            ad.style.display = 'none';
+        };
+
+        ad.onclick = function() {
+            window.location.href = '#';
+        };
+
+        var speedX = 0.3;
+        var speedY = 0.3;
+        var safeGap = 15;
+
+        function floatLoop() {
+            var winW = window.innerWidth;
+            var winH = window.innerHeight;
+            var adW = ad.offsetWidth;
+            var adH = ad.offsetHeight;
+            var x = parseFloat(getComputedStyle(ad).left);
+            var y = parseFloat(getComputedStyle(ad).top);
+
+            x += speedX;
+            y += speedY;
+
+            if (x <= safeGap || x >= winW - adW - safeGap) {
+                speedX = -speedX;
+                speedY = (Math.random() * 0.4 - 0.2);
+            }
+            if (y <= safeGap || y >= winH - adH - safeGap) {
+                speedY = -speedY;
+                speedX = (Math.random() * 0.4 - 0.2);
+            }
+
+            ad.style.left = x + 'px';
+            ad.style.top = y + 'px';
+            requestAnimationFrame(floatLoop);
+        }
+
+        floatLoop();
+        window.addEventListener('resize', function() {});
+    </script>
+</body>
+</html>
